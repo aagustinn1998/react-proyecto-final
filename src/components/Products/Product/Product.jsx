@@ -4,7 +4,7 @@ import { AddShoppingCart } from '@material-ui/icons';
 
 import useStyles from './styles';
 
-const Product = ({ product }) => {
+const Product = ({ product, onAddToCart }) => {
     const classes = useStyles();
 
     return (
@@ -16,18 +16,16 @@ const Product = ({ product }) => {
                         {Product.name}
                     </Typography>
                     <Typography variant="h5" gutterBottom>
-                        {Product.price}
+                        {Product.price.formatted_with_symbol}
                     </Typography>
                 </div>
-                <Typography variant='h2' color='tectSecondaty'>{product.descriptions} </Typography>
+                <Typography dangerouslySetInnerHTML={{ __html:product.description }} variant='bosy2' color='tectSecondaty' />
             </CardContent>
             <CardActions disableSpacing className={classes.cardActions}>
-                <IconButton arial-label="Agregar al Carrito">
+                <IconButton arial-label="Agregar al Carrito" onClick={onAddToCart}>
                     <AddShoppingCart/>
                 </IconButton> 
-
             </CardActions>
- 
         </Card>
   );
 }

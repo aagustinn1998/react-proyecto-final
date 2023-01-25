@@ -19,7 +19,7 @@ const Product = ({ product, onAddToCart }) => {
                         {Product.price.formatted_with_symbol}
                     </Typography>
                 </div>
-                <Typography dangerouslySetInnerHTML={{ __html:product.description }} variant='bosy2' color='tectSecondaty' />
+                <Typography dangerouslySetInnerHTML={{ __html: product.description }} variant='bosy2' color='tectSecondaty' />
             </CardContent>
             <CardActions disableSpacing className={classes.cardActions}>
                 <IconButton arial-label="Agregar al Carrito" onClick={() => onAddToCart (product.id, 1)}>

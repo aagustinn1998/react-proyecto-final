@@ -1,24 +1,28 @@
 import React from 'react'
 import { Container, Typography, Button, Grid } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 
 import useStyles from './styles';
 import CartItem from './CartItem/CartItem';
 
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart, onUpdateCartQty, onRemoveFromCart, onEmptyCart }) => {
     const classes = useStyles();
 
     const EmptyCart = () => (
-        <Typography variant="subtitle1">¡Tu carrito de compra esta vacio!</Typography>
+        <Typography variant="subtitle1">El carrito esta vacio,
+      <Link className={classes.link} to="/">empiza a agragar productos</Link>!
+    </Typography>
     );
 
     const FilledCart = () => (
         <>
             <Grid container spacing={3}>
-                {cart.line_items.map((Item) => (
-                    <Grid item xs={12} sm={4} key={Item.id}>
-                        <CartItem item={Item}/> 
+                 {cart.line_items.map((item) => (
+                    <Grid item xs={12} sm={4} key={item.id}>
+                      <CartItem item={lineItem} onUpdateCartQty={onUpdateCartQty} onRemoveFromCart={onRemoveFromCart} />
+
                     </Grid>
                 ))}
 
@@ -26,13 +30,13 @@ const Cart = ({ cart }) => {
             <div className={classes.cardDetails}>
                 <Typography variant='h4'>Subtotal: { cart.subtotal.formatted_with_symbol}</Typography>
                 <div>
-                <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary">Carrito vacio</Button>
-          <Button className={classes.checkoutButton}  size="large" type="button" variant="contained" color="primary">Checkout</Button>
+                    <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary" onClick={handleEmptyCart} >Carrito vacio</Button>
+                    <Button className={classes.checkoutButton}  size="large" type="button" variant="contained" color="primary">Checkout</Button>
                 </div>
             </div>
         </>
 
-    );
+    )
 
     if(!cart.line_items) return 'Cargando ...';
 

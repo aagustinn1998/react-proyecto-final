@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from './lib/commerce';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-
 import { Navbar, Products, Cart } from './components';
 
 
@@ -21,10 +20,28 @@ const App = () => {
     }
 
     const handleAddToCart = async (productId, quantity) => {
-        const item = await commerce.cart.add(productId, quantity);
+        const { cart } = await commerce.cart.add(productId, quantity);
 
-        setCart(item.cart);
+        setCart(cart);
     }
+
+    const handleUpdateCartQty = async (lineItemId, quantity) => {
+        const { cart } = await commerce.cart.update(lineItemId, { quantity });
+    
+        setCart(cart);
+    }
+    
+    const handleRemoveFromCart = async (lineItemId) => {
+        const response = await commerce.cart.remove(lineItemId);
+    
+        setCart(response.cart);
+    }
+
+    const handleEmptyCart = async () => {
+        const response = await commerce.cart.empty();
+    
+        setCart(response.cart);
+    };
 
     useEffect(() => {
         fetchProducts();
@@ -36,15 +53,13 @@ const App = () => {
 
     return (
         <Router>
-            <div>
-                <Navbar totalItems={cart.total_items} />          
-                    <Route exact path="/">
-                        <Products products={products} onAddToCart={handleAddToCart} />
-                    </Route>                       
-                    <Route exact path="/cart"  >
-                        <Cart cart={cart} />
-                    </Route>   
-            </div>
+            <Navbar totalItems={cart.total_items} />
+                <Route exact path="/">
+                    <Products products={products} onAddToCart={handleAddToCart} />
+                </Route>
+                <Route exact path="/cart"  >
+                    <Cart cart={cart} onUpdateCartQty={handleUpdateCartQty} onRemoveFromCart={handleRemoveFromCart} onEmptyCart={handleEmptyCart} />
+                </Route>
         </Router >
     );
 }

@@ -20,12 +20,14 @@ const Navbar = ({ totalItems }) => {
                     </Typography>
                     <div className={classes.grow} />
                     {location.pathname === '/' && (
-                    <div className={classes.button}>                        <IconButton component={Link} to="/cart" aria-label="Show cart items" color="inherit">
+                    <div className={classes.button}>    
+                        <IconButton component={Link} to="/cart" aria-label="Show cart items" color="inherit">
                             <Badge badgeContent={totalItems} color="secondary">
                                 <ShoppingCart />
                             </Badge>
                         </IconButton>
-                    </div> )}
+                    </div>
+                 )}
                 </Toolbar>
             </AppBar>
         </>

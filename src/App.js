@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { commerce } from './lib/commerce';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Navbar, Products, Cart } from './components';
+import { Navbar, Products, Cart, Checkout } from './components';
 
 
 
@@ -27,19 +27,19 @@ const App = () => {
 
     const handleUpdateCartQty = async (productId, quantity) => {
         const { cart } = await commerce.cart.update(productId, { quantity });
-    
+
         setCart(cart);
     }
-    
+
     const handleRemoveFromCart = async (productId) => {
         const { cart } = await commerce.cart.remove(productId);
-    
+
         setCart(cart);
     }
 
     const handleEmptyCart = async () => {
         const { cart } = await commerce.cart.empty();
-    
+
         setCart(cart);
     };
 
@@ -54,17 +54,20 @@ const App = () => {
     return (
         <Router>
             <Navbar totalItems={cart.total_items} />
-                <Route exact path="/">
-                    <Products products={products} onAddToCart={handleAddToCart} />
-                </Route>
-                <Route exact path="/cart"  >
-                    <Cart
-                        cart={cart} 
-                        handleUpdateCartQty={handleUpdateCartQty}
-                        handleRemoveFromCart={handleRemoveFromCart}
-                        handleEmptyCart={handleEmptyCart} 
-                    />
-                </Route>
+            <Route exact path="/">
+                <Products products={products} onAddToCart={handleAddToCart} />
+            </Route>
+            <Route exact path="/cart"  >
+                <Cart
+                    cart={cart}
+                    handleUpdateCartQty={handleUpdateCartQty}
+                    handleRemoveFromCart={handleRemoveFromCart}
+                    handleEmptyCart={handleEmptyCart}
+                />
+            </Route>
+            <Route path="/checkout" exact>
+                <Checkout cart={cart} order={order} onCaptureCheckout={handleCaptureCheckout} error={errorMessage} />
+            </Route>
         </Router >
     );
 }
